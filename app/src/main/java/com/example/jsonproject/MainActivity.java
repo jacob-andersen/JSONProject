@@ -1,15 +1,20 @@
 package com.example.jsonproject;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -22,8 +27,9 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ShibeAdapter.OnShibeClicked {
     private static final String TAG = "JSON_Shibe";
+    public static final String PHOTO_KEY = "com.example.jsonproject.PHOTO";
 
     private RecyclerView recyclerView;
     private ShibeAdapter shibeAdapter;
@@ -38,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         new ShibeTask().execute("100");
-
 
         final Button button = findViewById(R.id.btn);
         button.setOnClickListener(new View.OnClickListener() {
@@ -61,8 +66,17 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setHasFixedSize(true);
             layoutSwitch = true;
         }
-//        new ShibeTask().execute("100");
+       new ShibeTask().execute("100");
     }
+
+    @Override
+    public void shibeClicked(String url) {
+        Intent intent = new Intent(this, Main2Activity.class);
+        intent.putExtra(PHOTO_KEY, url);
+        startActivity(intent);
+    }
+
+//        Toast.makeText(this,url,Toast.LENGTH_SHORT).show();
 
     class ShibeTask extends AsyncTask<String, Void, List<String>> {
 
@@ -130,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<String> strings) {
             super.onPostExecute(strings);
-            shibeAdapter = new ShibeAdapter(strings);
+            shibeAdapter = new ShibeAdapter(strings, MainActivity.this);
             recyclerView.setAdapter(shibeAdapter);
         }
     }
