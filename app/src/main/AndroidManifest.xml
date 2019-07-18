@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".Main2Activity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -20,6 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".MainActivity$MyShibeService"
+            android:exported="false" />
     </application>
 
 </manifest>
